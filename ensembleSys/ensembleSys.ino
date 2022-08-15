@@ -30,9 +30,11 @@ int LED_pin0 = 9;
 int LED_pin1 = 10;
 int LED_pin2 = 11;
 
+int value1;
+
 void setup() {
   
-  Serial.begin(115200);
+  Serial.begin(9600);
   
   pinMode(LED_pin0,OUTPUT);
   pinMode(LED_pin1,OUTPUT);
@@ -49,11 +51,6 @@ void setup() {
   player3.begin(); 
 }
 
-//// Test Here // 
-//player1.clear();
-//player1.setPixelColor(chordIndex0[2], player1.Color(255, 255, 255));
-//player1.show();
-/////////////////
 
 void loop() {
 
@@ -61,31 +58,39 @@ void loop() {
   int softPot1 = analogRead(1);
   int softPot2 = analogRead(2);
 
+//  // Test Here //   
+//  player1.clear();
+//  player1.setPixelColor(chordIndex0[2], player1.Color(255, 255, 255));
+//  player1.show();
+//  ///////////////
+
   if (Serial.available())
   {
-    int value1 = Serial.read();
-    if (value1 == 1)
-      {
-        player1.clear();
-        player1.setPixelColor(chordIndex0[counter], player1.Color(255, 255, 255));
-        player1.show();   // Send the updated pixel colors to the hardware.
-        counter++;
-      }
-    else if (value1 == 0)
-      {
-        player1.clear();
-      }
+    value1 = Serial.read();
+//    if (value1 == 1)
+//      {
+//        player1.clear();
+//        player1.setPixelColor(chordIndex0[counter], player1.Color(255, 255, 255));
+//        player1.show();   // Send the updated pixel colors to the hardware.
+//        counter++;
+//      }
+//    else if (value1 == 0)
+//      {
+//        player1.clear();
+//      }
    }
   
   
 
 //  delay(DELAYVAL); // Pause before next pass through loop
   
-  Serial.print(softPot0);
-  Serial.print(" ");
-  Serial.print(softPot1);
-  Serial.print(" ");
-  Serial.println(softPot2);
+//  Serial.print(softPot0);
+//  Serial.print(" ");
+//  Serial.print(softPot1);
+//  Serial.print(" ");
+//  Serial.println(softPot2);
+
+  Serial.println(value1);
 
   delay(5);
 
