@@ -67,6 +67,14 @@ void loop() {
   if (Serial.available())
   {
     value1 = Serial.read();
+    
+    Serial.println(value1);
+//      if (value1 == 1);
+//      {
+//        // Serial.println ("AD == 1");
+//        // Serial.println(value1);
+//      }
+        
 //    if (value1 == 1)
 //      {
 //        player1.clear();
@@ -90,7 +98,7 @@ void loop() {
 //  Serial.print(" ");
 //  Serial.println(softPot2);
 
-  Serial.println(value1);
+  
 
   delay(5);
 

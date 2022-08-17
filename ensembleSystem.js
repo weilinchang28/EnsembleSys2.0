@@ -44,10 +44,10 @@ var sD5 = 622.25;
 // ];
 
 
-var userA = [F4,F4,G4,G4,G4,A4,A4,A4,A4,sA4,sA4,C5,C5];
-var userB = [D4,D4,D4,D4,E4,E4,E4,F4,F4,G4,G4,A4];
-var userC = [A3,sA3,sA3,C4,C4,C4,D4,D4,D4,E4,E4,F4];
-var userChord = [userA, userB, userC];
+var user1 = [F4,F4,G4,G4,G4,A4,A4,A4,A4,sA4,sA4,C5,C5];
+var user2 = [D4,D4,D4,D4,E4,E4,E4,F4,F4,G4,G4,A4];
+var user3 = [A3,sA3,sA3,C4,C4,C4,D4,D4,D4,E4,E4,F4];
+var userChord = [user1, user2, user3];
 var counter = 0;
 var chordIndex = 0;
 
@@ -59,17 +59,17 @@ function playChord(freqA, freqB, freqC) // freq from MAXMSP, user number (e.g., 
 {
     var result = [false,false,false];
 
-    if (Math.abs(freqA-userA[chordIndex])<acceptFRange)
+    if (Math.abs(freqA-user1[chordIndex])<acceptFRange)
     {
         result[0]=true;
     }
 
-    if (Math.abs(freqB-userB[chordIndex])<acceptFRange)
+    if (Math.abs(freqB-user2[chordIndex])<acceptFRange)
     {
         result[1]=true;
     }
 
-    if (Math.abs(freqC-userC[chordIndex])<acceptFRange)
+    if (Math.abs(freqC-user3[chordIndex])<acceptFRange)
     {
         result[2]=true;
     }
@@ -103,8 +103,8 @@ function playChord(freqA, freqB, freqC) // freq from MAXMSP, user number (e.g., 
         outlet(0, false);
     }
 
-    outlet(1, "Counter " + counter);
-    outlet(2, "Current Chord " + chordIndex);
+    outlet(1, "counter " + counter);
+    outlet(2, "ChordNum " + chordIndex);
     
 }
 
