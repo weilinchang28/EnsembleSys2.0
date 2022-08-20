@@ -32,9 +32,11 @@ int LED_pin2 = 11;
 
 int value1;
 
+////// SETUP //////
+
 void setup() {
   
-  Serial.begin(9600);
+  Serial.begin(115200);
   
   pinMode(LED_pin0,OUTPUT);
   pinMode(LED_pin1,OUTPUT);
@@ -51,6 +53,7 @@ void setup() {
   player3.begin(); 
 }
 
+////// LOOP //////
 
 void loop() {
 
@@ -58,6 +61,10 @@ void loop() {
   int softPot1 = analogRead(1);
   int softPot2 = analogRead(2);
 
+  int fsr0 = analogRead(3);
+  int fsr1 = analogRead(4);
+  int fsr2 = analogRead(5);
+  
 //  // Test Here //   
 //  player1.clear();
 //  player1.setPixelColor(chordIndex0[2], player1.Color(255, 255, 255));
@@ -67,8 +74,12 @@ void loop() {
   if (Serial.available())
   {
     value1 = Serial.read();
+
+//    if (value1 == 1);
+//    {
+//    Serial.println ("ONE");
+//    }
     
-    Serial.println(value1);
 //      if (value1 == 1);
 //      {
 //        // Serial.println ("AD == 1");
@@ -91,13 +102,21 @@ void loop() {
   
 
 //  delay(DELAYVAL); // Pause before next pass through loop
-  
-//  Serial.print(softPot0);
-//  Serial.print(" ");
-//  Serial.print(softPot1);
-//  Serial.print(" ");
-//  Serial.println(softPot2);
+//  Serial.print ("INCOMING ");
+//  Serial.println (value1);
 
+  
+  Serial.print (softPot0);
+  Serial.print (" ");
+  Serial.print (softPot1);
+  Serial.print (" ");
+  Serial.print (softPot2); 
+  Serial.print (" ");
+  Serial.print (fsr0);
+  Serial.print (" ");
+  Serial.print (fsr1);
+  Serial.print (" ");
+  Serial.println (fsr2);
   
 
   delay(5);
