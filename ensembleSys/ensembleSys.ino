@@ -16,21 +16,23 @@ Adafruit_NeoPixel player3(NUMPIXELS, PIN2, NEO_GRB + NEO_KHZ800);
 
 #define DELAYVAL 500 // Time (in milliseconds) to pause between pixels
 
+int LEDPos = 0;
+int counter = 0; 
+int value1;
+
+int LED_pin0 = 9;
+int LED_pin1 = 10;
+int LED_pin2 = 11;
+
 //////////////////////////////////////////////////////
 
+// Chord Progression 01 
 int chordIndex0 [] = {4,4,7,7,7,10,10,10,13,13,20,20};
 int chordIndex1 [] = {4,4,7,7,7,10,10,10,13,13,20,20};
 int chordIndex2 [] = {4,4,7,7,7,10,10,10,13,13,20,20};
 
 //////////////////////////////////////////////////////
 
-int counter = 0; 
-
-int LED_pin0 = 9;
-int LED_pin1 = 10;
-int LED_pin2 = 11;
-
-int value1;
 
 ////// SETUP //////
 
@@ -42,15 +44,20 @@ void setup() {
   pinMode(LED_pin1,OUTPUT);
   pinMode(LED_pin2,OUTPUT);
   
-  ////////////////////////////////////////////////////
+  /////////////////////////
   
   #if defined(__AVR_ATtiny85__) && (F_CPU == 16000000)
   clock_prescale_set(clock_div_1);
   #endif
 
   player1.begin(); 
+  
+  player1.clear();
+  player1.show();
+  
   player2.begin();  
-  player3.begin(); 
+  player3.begin();
+
 }
 
 ////// LOOP //////
@@ -65,11 +72,6 @@ void loop() {
   int fsr1 = analogRead(4);
   int fsr2 = analogRead(5);
   
-//  // Test Here //   
-//  player1.clear();
-//  player1.setPixelColor(chordIndex0[2], player1.Color(255, 255, 255));
-//  player1.show();
-//  ///////////////
 
   if (Serial.available())
   {
@@ -98,8 +100,6 @@ void loop() {
 //        player1.clear();
 //      }
    }
-  
-  
 
 //  delay(DELAYVAL); // Pause before next pass through loop
 //  Serial.print ("INCOMING ");
@@ -118,7 +118,66 @@ void loop() {
   Serial.print (" ");
   Serial.println (fsr2);
   
-
   delay(5);
 
+
+  ///// IMPROV MODE - LEDs (HANDS) off /////
+  
+  //// Player 1 //// 
+  if (softPot0 < 15) 
+  {
+    player1.clear();
+    player1.show();
+  }
+
+  if (softPot0 > 15 && fsr0 > 10) 
+  {
+    LEDPos = map (softPot0, 0 , 1023, 0, 30);
+    player1.clear();
+    player1.setPixelColor(LEDPos, 255, 255, 255);
+    player1.show();
+  }
+
+  //// Player 2 //// 
+  if (softPot1 < 15) 
+  {
+    player2.clear();
+    player2.show();
+  }
+
+  if (softPot1 > 15 && fsr1 > 10) 
+  {
+    LEDPos = map (softPot1, 0 , 1023, 0, 30);
+    player2.clear();
+    player2.setPixelColor(LEDPos, 255, 255, 255);
+    player2.show();
+  }
+
+  //// Player 3 //// 
+  if (softPot2 < 15) 
+  {
+    player3.clear();
+    player3.show();
+  }
+
+  if (softPot2 > 15 && fsr2 > 10) 
+  {
+    LEDPos = map (softPot2, 0 , 1023, 0, 30);
+    player3.clear();
+    player3.setPixelColor(LEDPos, 255, 255, 255);
+    player3.show();
+  }
+
+  //////////////////////////////////////////
+  
+}
+
+
+////// Set all LEDs off (IMPROV MODE) //////
+
+void clearLEDs()
+{
+  for (int i = 0; i < NUMPIXELS; i++){
+    player1.setPixelColor (i, 0);
+  }
 }
