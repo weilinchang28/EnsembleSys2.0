@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 87.0, 2492.0, 1234.0 ],
+		"rect" : [ 34.0, 87.0, 913.0, 1234.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -735,7 +735,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 215.629908378720302, 1119.722330868244171, 245.245404005050659, 22.0 ],
-					"text" : "\"ChordNum 0\""
+					"text" : "\"ChordNum 1\""
 				}
 
 			}
@@ -759,7 +759,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 215.629908378720302, 1056.046900172233563, 245.148149460554123, 22.0 ],
-					"text" : "playChord 349.23 466.16 349.23"
+					"text" : "playChord 349.23 293.66 339.881984"
 				}
 
 			}
@@ -1377,7 +1377,17 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-40", 1 ],
+					"midpoints" : [ 661.413639287948627, 848.422464743256569, 278.129908378720302, 848.422464743256569 ],
+					"order" : 1,
+					"source" : [ "obj-45", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-51", 0 ],
+					"order" : 0,
 					"source" : [ "obj-45", 0 ]
 				}
 
@@ -1544,7 +1554,17 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-40", 2 ],
+					"midpoints" : [ 1292.549056272506732, 848.94523660838604, 331.129908378720302, 848.94523660838604 ],
+					"order" : 1,
+					"source" : [ "obj-82", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-84", 0 ],
+					"order" : 0,
 					"source" : [ "obj-82", 0 ]
 				}
 
