@@ -61,9 +61,9 @@ int userPitch3 [ ] = {nA3, sA3, sA3, nC4, nC4, nC4, nD4, nD4, nD4, nE4, nE4, nF4
 int userChord [ ] = {userPitch1, userPitch2, userPitch3};
 
 ///// Chord Progression 01 - LEDs ///// 
-int userPitchLED1 [ ] = {20, 16, 13, 13, 10, 10, 10, 7, 7, 7, 4, 4};
-int userPitchLED2 [ ] = {20, 16, 13, 13, 10, 10, 10, 7, 7, 7, 4, 4};
-int userPitchLED3 [ ] = {20, 16, 13, 13, 10, 10, 10, 7, 7, 7, 4, 4};
+int userPitchLED1 [ ] = {26, 26, 20, 20, 20, 13, 13, 13, 9, 9, 2, 2}; // {27, 27, 19, 19, 19, 11, 11, 11, 7, 7, 0, 0}
+int userPitchLED2 [ ] = {26, 26, 26, 26, 20, 20, 20, 17, 17, 8, 8, 0}; // {27, 27, 27, 27, 19, 19, 19, 15, 15, 7, 7, 0}
+int userPitchLED3 [ ] = {26, 24, 24, 18, 18, 18, 11, 11, 11, 3, 3, 0}; // {27, 23, 23, 15, 15, 15, 7, 7, 7, 2, 2, 0}
 int userLEDs [ ] = {userPitchLED1, userPitchLED2, userPitchLED3};
 
 float mapSoftPot0;
@@ -81,7 +81,7 @@ int acceptRange = 5; // out of tune range
 void setup() 
 {
   
-  Serial.begin (115200);
+  Serial.begin (9600);
   
 //  pinMode (LED_pin0, OUTPUT);
 //  pinMode (LED_pin1, OUTPUT);
@@ -179,9 +179,9 @@ softPot0 = analogRead (0);
 softPot1 = analogRead (1);
 softPot2 = analogRead (2);
 
-mapSoftPot0 = map (softPot0, 1023, 0, nF4, nC5);
-mapSoftPot1 = map (softPot1, 1023, 0, nD4, nA4);
-mapSoftPot2 = map (softPot2, 1023, 0, nA3, nF4);
+mapSoftPot0 = map (softPot0, 1023, 0, nE4, sC5); // nF4, nC5
+mapSoftPot1 = map (softPot1, 1023, 0, sC4, nA4); //nD4
+mapSoftPot2 = map (softPot2, 1023, 0, sG3, nF4); //nA3
 
 int fsr0 = analogRead (3);
 int fsr1 = analogRead (4);
@@ -253,7 +253,7 @@ boolean result [3] = {false, false, false};
   }
   else // if not all of them are in tune
   {
-     Serial.println ("out of tune");
+    Serial.println ("out of tune");
   }
 
   Serial.print ("chordIndex ");
