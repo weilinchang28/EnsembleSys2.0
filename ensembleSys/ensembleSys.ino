@@ -70,9 +70,9 @@ float mapSoftPot0;
 float mapSoftPot1;
 float mapSoftPot2;
 
-
 int chordIndex = 0;
 int LEDchordIndex = 0;
+int LEDbrightness = 0;
 int acceptRange = 5; // out of tune range
 
 
@@ -82,10 +82,6 @@ void setup()
 {
   
   Serial.begin (9600);
-  
-//  pinMode (LED_pin0, OUTPUT);
-//  pinMode (LED_pin1, OUTPUT);
-//  pinMode (LED_pin2, OUTPUT);
 
   // ADAFRUIT // 
   #if defined (__AVR_ATtiny85__) && (F_CPU == 16000000)
@@ -94,130 +90,88 @@ void setup()
 
   // LED Setup // 
   player1.begin();  
+  player1.setBrightness (50);
   player1.clear();
   player1.show();
   
   player2.begin(); 
+  player2.setBrightness (50);
   player2.clear();
   player2.show();
    
   player3.begin();
+  player3.setBrightness (50);
   player3.clear();
   player3.show();
   
 }
 
 
-///// PLAYCHORD FUNC /////
+void loop() 
+{
 
-//void playChord ()
-//{
-//  boolean result [3] = {false, false, false};
-//
-//  if (abs(mapSoftPot0 - user1[chordIndex] < acceptRange))
-//  {
-//    result [0] = true;
-//    Serial.println ("YAY1");
-//  }
-//
-//    if (abs(mapSoftPot1 - user2[chordIndex] < acceptRange))
-//  {
-//    result [1] = true;
-//    Serial.println ("YAY2");
-//  }
-//
-//    if (abs(mapSoftPot2 - user3[chordIndex] < acceptRange))
-//  {
-//    result [2] = true;
-//    Serial.println ("YAY3");
-//  }
-//
-//  int numInTune = 0;
-//  for (int i = 0; i < sizeof(result); i++) // 
-//  {
-//    if (result[i] == true)
-//    {
-//      numInTune++; 
-//    }
-//  }
-//  
-//  Serial.print ("numInTune ");
-//  Serial.println (numInTune);
-//  
-//  if (numInTune == 3) // if all three are in tune 
-//  {
-//    Serial.println ("!!ALL IN TUNE!!"); // "all in tune " + true
-//    
-//    if (counter > 100) // define the deboucing value
-//    {
-//      chordIndex++;
-//      counter = 0;
-//    } 
-//    else
-//    {
-//      counter++;
-//    }
-//  }
-//  else // if not all of them are in tune
-//  {
-//     Serial.println ("out of tune");
-//  }
-//
-//  Serial.print ("chordIndex ");
-//  Serial.println (chordIndex);
-//  Serial.print ("counter ");
-//  Serial.println (counter);
-//  Serial.println (" ");
-//
-//}
+  softPot0 = analogRead (0);
+  softPot1 = analogRead (1);
+  softPot2 = analogRead (2);
+
+  mapSoftPot0 = map (softPot0, 1023, 0, nE4, sC5); // nF4, nC5
+  mapSoftPot1 = map (softPot1, 1023, 0, sC4, nA4); //nD4
+  mapSoftPot2 = map (softPot2, 1023, 0, sG3, nF4); //nA3
+
+  int fsr0 = analogRead (3);
+  int fsr1 = analogRead (4);
+  int fsr2 = analogRead (5);
 
 
 
-void loop() {
+  ///// LED Standby Mode - ColorWipe /////
+    
+  colorWipe(player1.Color(255, 222, 0), 15);
+  player1.clear();
 
-softPot0 = analogRead (0);
-softPot1 = analogRead (1);
-softPot2 = analogRead (2);
+  colorWipe(player2.Color(255, 222, 0), 15);
+  player2.clear();
 
-mapSoftPot0 = map (softPot0, 1023, 0, nE4, sC5); // nF4, nC5
-mapSoftPot1 = map (softPot1, 1023, 0, sC4, nA4); //nD4
-mapSoftPot2 = map (softPot2, 1023, 0, sG3, nF4); //nA3
+  colorWipe(player3.Color(255, 222, 0), 15);
+  player3.clear();
+  // delay(1000);
 
-int fsr0 = analogRead (3);
-int fsr1 = analogRead (4);
-int fsr2 = analogRead (5);
 
-// playChord();
-
-player1.clear();
-player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 255, 255);
-player1.show();
-
-player2.clear();
-player2.setPixelColor (userPitchLED2 [LEDchordIndex], 255, 255, 255);
-player2.show();
-
-player3.clear();
-player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 255, 255);
-player3.show();
+  ///// ChordProg LED /////
   
-/////
-/////
+//  player1.clear();
+//  player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 255, 255);
+//  player1.show();
+//  
+//  player2.clear();
+//  player2.setPixelColor (userPitchLED2 [LEDchordIndex], 255, 255, 255);
+//  player2.show();
+//  
+//  player3.clear();
+//  player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 255, 255);
+//  player3.show();
 
-boolean result [3] = {false, false, false};
+  /////////////////////////
 
+
+
+  boolean result [3] = {false, false, false};
+
+  // SoftPot0 Tune Check 
   if (abs(mapSoftPot0 - userPitch1[chordIndex] < acceptRange))
   {
     result [0] = true;
     Serial.println ("YAY1");
   }
 
+  // SoftPot1 Tune Check
     if (abs(mapSoftPot1 - userPitch2[chordIndex] < acceptRange))
   {
     result [1] = true;
     Serial.println ("YAY2");
   }
 
+  // SoftPot2 Tune Check
     if (abs(mapSoftPot2 - userPitch3[chordIndex] < acceptRange))
   {
     result [2] = true;
@@ -235,10 +189,11 @@ boolean result [3] = {false, false, false};
   
   Serial.print ("numInTune ");
   Serial.println (numInTune);
-  
-  if (numInTune == 3) // if all three are in tune 
+
+  // All in Tune Check 
+  if (numInTune == 3) 
   {
-    Serial.println ("!!ALL IN TUNE!!"); // "all in tune " + true
+    Serial.println ("!!ALL IN TUNE!!"); 
     
     if (counter > 100) // define the deboucing value
     {
@@ -251,6 +206,7 @@ boolean result [3] = {false, false, false};
       counter++;
     }
   }
+  
   else // if not all of them are in tune
   {
     Serial.println ("out of tune");
@@ -261,40 +217,8 @@ boolean result [3] = {false, false, false};
   Serial.print ("counter ");
   Serial.println (counter);
   Serial.println (" ");
-
-
-/////
-/////
-
-
-
-//  int softPot0 = analogRead (0);
-//  int softPot1 = analogRead (1);
-//  int softPot2 = analogRead (2);
-//
-//  int fsr0 = analogRead (3);
-//  int fsr1 = analogRead (4);
-//  int fsr2 = analogRead (5);
   
-
-
-
-//  delay(DELAYVAL); // Pause before next pass through loop
-//  Serial.print ("INCOMING ");
-//  Serial.println (value1);
-
-  
-//  Serial.print (softPot0);
-//  Serial.print (" ");
-//  Serial.print (softPot1);
-//  Serial.print (" ");
-//  Serial.print (softPot2); 
-//  Serial.print (" ");
-//  Serial.print (fsr0);
-//  Serial.print (" ");
-//  Serial.print (fsr1);
-//  Serial.print (" ");
-//  Serial.println (fsr2);
+  // delay(DELAYVAL); // Pause before next pass through loop
 
   Serial.print (mapSoftPot0);
   Serial.print (" ");
@@ -363,42 +287,48 @@ boolean result [3] = {false, false, false};
 }
 
 
-////// Set all LEDs off (IMPROV MODE) //////
-
-void clearLEDs()
+///// ColorWipe Func /////
+void colorWipe (uint32_t color, int wait) 
 {
-  for (int i = 0; i < NUMPIXELS; i++)
-  {
-    player1.setPixelColor (i, 0);
+
+  for (int i = NUMPIXELS; i > -2 ; i--) // -2 ?? better solution
+  { 
+    player1.setPixelColor(i, color);        
+    player1.show();                          
+    delay(wait);                           
+    player1.clear();
   }
+  
+  for (int i = NUMPIXELS; i > -2 ; i--) 
+  { 
+    player2.setPixelColor(i, color);        
+    player2.show();                          
+    delay(wait);                           
+    player2.clear();
+  }
+  
+  for (int i = NUMPIXELS; i > -2 ; i--) 
+  { 
+    player3.setPixelColor(i, color);        
+    player3.show();                          
+    delay(wait);                           
+    player3.clear();
+  }
+  
 }
 
-//////////
-//  if ( Serial.available() )
-//  {
-//    value1 = Serial.read();
-//
-//    if (value1 == 1);
-//    {
-//    Serial.println ("ONE");
-//    }
-    
-//      if (value1 == 1);
-//      {
-//        // Serial.println ("AD == 1");
-//        // Serial.println(value1);
-//      }
-        
-//    if (value1 == 1)
-//      {
-//        player1.clear();
-//        player1.setPixelColor(chordIndex0[counter], player1.Color(255, 255, 255));
-//        player1.show();   // Send the updated pixel colors to the hardware.
-//        counter++;
-//      }
-//    else if (value1 == 0)
-//      {
-//        player1.clear();
-//      }
-//   }
-////////////
+//??
+void theaterChase(uint32_t color, int wait) 
+{
+  for (int a=0; a<20; a++) {  // Repeat 10 times...
+    for(int b=0; b<5; b++) { //  'b' counts from 0 to 2...
+      player1.clear();         //   Set all pixels in RAM to 0 (off)
+      // 'c' counts up from 'b' to end of strip in steps of 3...
+      for(int c=b; c<NUMPIXELS; c += 3) {
+        player1.setPixelColor(c, color); // Set pixel 'c' to value 'color'
+      }
+      player1.show(); // Update strip with new contents
+      delay(wait);  // Pause for a moment
+    }
+  }
+}
