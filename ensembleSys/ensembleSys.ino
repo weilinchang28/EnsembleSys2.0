@@ -17,19 +17,13 @@ Adafruit_NeoPixel player3 (NUMPIXELS, PIN2, NEO_GRB + NEO_KHZ800);
 
 #define DELAYVAL 500 // Time (in milliseconds) to pause between pixels
 
-
 int LED_pin0 = 9;
 int LED_pin1 = 10;
 int LED_pin2 = 11;
 
-int LEDPos = 0; // Imporv Mode
-int counter = 0; 
-int value1; // ?? 
-
 int softPot0 = analogRead (0);
 int softPot1 = analogRead (1);
 int softPot2 = analogRead (2);
-
 
 ///// PITCHES /////
 float sG3 = 207.65;
@@ -53,9 +47,8 @@ float sC5 = 554.37;
 float nD5 = 587.33; 
 float sD5 = 622.25;
 
-
 ///// Chord Progression - Sys /////
-int userPitch1 [ ] = {nF4, nF4, nG4, nG4, nG4, nA4, nA4, nA4, nA4, sA4, sA4, nC5, nC5};
+int userPitch1 [ ] = {nF4, nF4, nG4, nG4, nG4, nA4, nA4, nA4, sA4, sA4, nC5, nC5};
 int userPitch2 [ ] = {nD4, nD4, nD4, nD4, nE4, nE4, nE4, nF4, nF4, nG4, nG4, nA4};
 int userPitch3 [ ] = {nA3, sA3, sA3, nC4, nC4, nC4, nD4, nD4, nD4, nE4, nE4, nF4};
 int userChord [ ] = {userPitch1, userPitch2, userPitch3};
@@ -72,8 +65,62 @@ float mapSoftPot2;
 
 int chordIndex = 0;
 int LEDchordIndex = 0;
-int LEDbrightness = 0;
-int acceptRange = 5; // out of tune range
+int LEDPos = 0; // Imporv Mode
+int acceptRange = 7.5; // out of tune range
+int numInTune;
+int counter = 0; 
+
+
+
+///// PlayChord Func /////
+
+void playChord()
+{
+
+  boolean result [3] = {false, false, false};
+  
+  // SoftPot0 Tune Check 
+  if (abs(mapSoftPot0 - userPitch1[chordIndex]) < acceptRange)
+  {
+    result [0] = true;
+  }
+
+  // SoftPot1 Tune Check
+  if (abs(mapSoftPot1 - userPitch2[chordIndex]) < acceptRange)
+  {
+    result [1] = true;
+  }
+
+  // SoftPot2 Tune Check
+  if (abs(mapSoftPot2 - userPitch3[chordIndex]) < acceptRange)
+  {
+    result [2] = true;
+  }
+
+  numInTune = 0;
+  for (int i = 0; i < sizeof(result); i++) // 
+  {
+    if (result[i] == true)
+    {
+      numInTune++; 
+    }
+  }
+
+  if (numInTune == 3) 
+  {
+    if (counter > 100) // define the deboucing value
+    {
+      chordIndex++;
+      LEDchordIndex++;
+      counter = 0;
+    } 
+    else
+    {
+      counter++;
+    }
+  }
+
+}
 
 
 
@@ -81,7 +128,7 @@ int acceptRange = 5; // out of tune range
 void setup() 
 {
   
-  Serial.begin (9600);
+  Serial.begin (115200);
 
   // ADAFRUIT // 
   #if defined (__AVR_ATtiny85__) && (F_CPU == 16000000)
@@ -123,103 +170,43 @@ void loop()
   int fsr2 = analogRead (5);
 
 
-
-  ///// LED Standby Mode - ColorWipe /////
-    
-  colorWipe(player1.Color(255, 222, 0), 15);
-  player1.clear();
-
-  colorWipe(player2.Color(255, 222, 0), 15);
-  player2.clear();
-
-  colorWipe(player3.Color(255, 222, 0), 15);
-  player3.clear();
-  // delay(1000);
+//  ///// LED Standby Mode - ColorWipe /////
+//    
+//  colorWipe(player1.Color(255, 222, 0), 15);
+//  player1.clear();
+//
+//  colorWipe(player2.Color(255, 222, 0), 15);
+//  player2.clear();
+//
+//  colorWipe(player3.Color(255, 222, 0), 15);
+//  player3.clear();
 
 
+
+///// COMPOSITION MODE ///// !!! Comment out when playing IMPROV mode !!!
+////////////////////////////
+
+  playChord(); 
+
+  
   ///// ChordProg LED /////
   
-//  player1.clear();
-//  player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 255, 255);
-//  player1.show();
-//  
-//  player2.clear();
-//  player2.setPixelColor (userPitchLED2 [LEDchordIndex], 255, 255, 255);
-//  player2.show();
-//  
-//  player3.clear();
-//  player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 255, 255);
-//  player3.show();
-
-  /////////////////////////
-
-
-
-  boolean result [3] = {false, false, false};
-
-  // SoftPot0 Tune Check 
-  if (abs(mapSoftPot0 - userPitch1[chordIndex] < acceptRange))
-  {
-    result [0] = true;
-    Serial.println ("YAY1");
-  }
-
-  // SoftPot1 Tune Check
-    if (abs(mapSoftPot1 - userPitch2[chordIndex] < acceptRange))
-  {
-    result [1] = true;
-    Serial.println ("YAY2");
-  }
-
-  // SoftPot2 Tune Check
-    if (abs(mapSoftPot2 - userPitch3[chordIndex] < acceptRange))
-  {
-    result [2] = true;
-    Serial.println ("YAY3");
-  }
-
-  int numInTune = 0;
-  for (int i = 0; i < sizeof(result); i++) // 
-  {
-    if (result[i] == true)
-    {
-      numInTune++; 
-    }
-  }
+  player1.clear();
+  player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 255, 255);
+  player1.show();
   
-  Serial.print ("numInTune ");
-  Serial.println (numInTune);
-
-  // All in Tune Check 
-  if (numInTune == 3) 
-  {
-    Serial.println ("!!ALL IN TUNE!!"); 
-    
-    if (counter > 100) // define the deboucing value
-    {
-      chordIndex++;
-      LEDchordIndex++;
-      counter = 0;
-    } 
-    else
-    {
-      counter++;
-    }
-  }
+  player2.clear();
+  player2.setPixelColor (userPitchLED2 [LEDchordIndex], 255, 255, 255);
+  player2.show();
   
-  else // if not all of them are in tune
-  {
-    Serial.println ("out of tune");
-  }
+  player3.clear();
+  player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 255, 255);
+  player3.show();
 
-  Serial.print ("chordIndex ");
-  Serial.println (chordIndex);
-  Serial.print ("counter ");
-  Serial.println (counter);
-  Serial.println (" ");
+////////////////////////////
+////////////////////////////
+
   
-  // delay(DELAYVAL); // Pause before next pass through loop
-
   Serial.print (mapSoftPot0);
   Serial.print (" ");
   Serial.print (mapSoftPot1);
@@ -230,13 +217,21 @@ void loop()
   Serial.print (" ");
   Serial.print (fsr1);
   Serial.print (" ");
-  Serial.println (fsr2);
+  Serial.print (fsr2);
+
+  Serial.print (" ");
+  Serial.print (numInTune);
+  Serial.print (" ");
+  Serial.print (counter);
+  Serial.print (" ");
+  Serial.println (chordIndex);
   
   delay(5);
 
 
-//  ///// IMPROV MODE - LEDs (HANDS) off /////
-//  
+///// IMPROV MODE - LEDs (HANDS) off /////
+//////////////////////////////////////////
+
 //  //// Player 1 //// 
 //  if (softPot0 < 15) 
 //  {
@@ -281,8 +276,9 @@ void loop()
 //    player3.setPixelColor (LEDPos, 255, 255, 255);
 //    player3.show();
 //  }
-//
-//  //////////////////////////////////////////
+
+//////////////////////////////////////////
+//////////////////////////////////////////
   
 }
 
@@ -315,20 +311,4 @@ void colorWipe (uint32_t color, int wait)
     player3.clear();
   }
   
-}
-
-//??
-void theaterChase(uint32_t color, int wait) 
-{
-  for (int a=0; a<20; a++) {  // Repeat 10 times...
-    for(int b=0; b<5; b++) { //  'b' counts from 0 to 2...
-      player1.clear();         //   Set all pixels in RAM to 0 (off)
-      // 'c' counts up from 'b' to end of strip in steps of 3...
-      for(int c=b; c<NUMPIXELS; c += 3) {
-        player1.setPixelColor(c, color); // Set pixel 'c' to value 'color'
-      }
-      player1.show(); // Update strip with new contents
-      delay(wait);  // Pause for a moment
-    }
-  }
 }
