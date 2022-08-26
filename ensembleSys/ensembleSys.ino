@@ -63,6 +63,10 @@ float mapSoftPot0;
 float mapSoftPot1;
 float mapSoftPot2;
 
+float mapSoftPot3;
+float mapSoftPot4;
+float mapSoftPot5;
+
 int chordIndex = 0;
 int LEDchordIndex = 0;
 int LEDPos = 0; // Imporv Mode
@@ -72,11 +76,11 @@ int counter = 0;
 
 
 
-///// PlayChord Func /////
 
+///// PlayChord Func /////
 void playChord()
 {
-
+  
   boolean result [3] = {false, false, false};
   
   // SoftPot0 Tune Check 
@@ -119,12 +123,46 @@ void playChord()
       counter++;
     }
   }
-
+  
 }
 
 
 
 
+///// ColorWipe Func /////
+void colorWipe (uint32_t color, int wait) 
+{
+
+  for (int i = NUMPIXELS; i > -2 ; i--) // -2 ?? better solution
+  { 
+    player1.setPixelColor(i, color);        
+    player1.show();                          
+    delay(wait);                           
+    player1.clear();
+  }
+  
+  for (int i = NUMPIXELS; i > -2 ; i--) 
+  { 
+    player2.setPixelColor(i, color);        
+    player2.show();                          
+    delay(wait);                           
+    player2.clear();
+  }
+  
+  for (int i = NUMPIXELS; i > -2 ; i--) 
+  { 
+    player3.setPixelColor(i, color);        
+    player3.show();                          
+    delay(wait);                           
+    player3.clear();
+  }
+  
+}
+
+
+
+
+///// SETUP /////
 void setup() 
 {
   
@@ -154,6 +192,9 @@ void setup()
 }
 
 
+
+
+///// LOOP /////
 void loop() 
 {
 
@@ -161,17 +202,26 @@ void loop()
   softPot1 = analogRead (1);
   softPot2 = analogRead (2);
 
+
+  ///// *** COMP MODE *** /////
   mapSoftPot0 = map (softPot0, 1023, 0, nE4, sC5); // nF4, nC5
   mapSoftPot1 = map (softPot1, 1023, 0, sC4, nA4); //nD4
   mapSoftPot2 = map (softPot2, 1023, 0, sG3, nF4); //nA3
+
+
+  ///// !!! IMPROV MODE !!! /////
+//  mapSoftPot3 = map (softPot0, 1023, 0, sC4, nA4);
+//  mapSoftPot4 = map (softPot1, 1023, 0, sC4, nA4);
+//  mapSoftPot5 = map (softPot2, 1023, 0, sC4, nA4);
+
 
   int fsr0 = analogRead (3);
   int fsr1 = analogRead (4);
   int fsr2 = analogRead (5);
 
 
-//  ///// LED Standby Mode - ColorWipe /////
-//    
+///// LED Standby Mode - ColorWipe /////
+
 //  colorWipe(player1.Color(255, 222, 0), 15);
 //  player1.clear();
 //
@@ -183,13 +233,13 @@ void loop()
 
 
 
-///// COMPOSITION MODE ///// !!! Comment out when playing IMPROV mode !!!
-////////////////////////////
+  ///// *** COMP MODE *** ///// 
+  /////////////////////////////
 
   playChord(); 
 
   
-  ///// ChordProg LED /////
+  // ChordProg LED //
   
   player1.clear();
   player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 255, 255);
@@ -203,15 +253,25 @@ void loop()
   player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 255, 255);
   player3.show();
 
-////////////////////////////
-////////////////////////////
+  /////////////////////////////
+  /////////////////////////////
 
-  
+
+
+  ///// *** COMP MODE *** /////
   Serial.print (mapSoftPot0);
   Serial.print (" ");
   Serial.print (mapSoftPot1);
   Serial.print (" ");
   Serial.print (mapSoftPot2); 
+
+  ///// !!! IMPROV MODE !!! ///// 
+//  Serial.print (mapSoftPot3);
+//  Serial.print (" ");
+//  Serial.print (mapSoftPot4);
+//  Serial.print (" ");
+//  Serial.print (mapSoftPot5); 
+  
   Serial.print (" ");
   Serial.print (fsr0);
   Serial.print (" ");
@@ -229,8 +289,8 @@ void loop()
   delay(5);
 
 
-///// IMPROV MODE - LEDs (HANDS) off /////
-//////////////////////////////////////////
+  ///// !!! IMPROV MODE - LEDs (HANDS) off !!! ///// 
+  //////////////////////////////////////////////////
 
 //  //// Player 1 //// 
 //  if (softPot0 < 15) 
@@ -277,38 +337,7 @@ void loop()
 //    player3.show();
 //  }
 
-//////////////////////////////////////////
-//////////////////////////////////////////
-  
-}
-
-
-///// ColorWipe Func /////
-void colorWipe (uint32_t color, int wait) 
-{
-
-  for (int i = NUMPIXELS; i > -2 ; i--) // -2 ?? better solution
-  { 
-    player1.setPixelColor(i, color);        
-    player1.show();                          
-    delay(wait);                           
-    player1.clear();
-  }
-  
-  for (int i = NUMPIXELS; i > -2 ; i--) 
-  { 
-    player2.setPixelColor(i, color);        
-    player2.show();                          
-    delay(wait);                           
-    player2.clear();
-  }
-  
-  for (int i = NUMPIXELS; i > -2 ; i--) 
-  { 
-    player3.setPixelColor(i, color);        
-    player3.show();                          
-    delay(wait);                           
-    player3.clear();
-  }
+  //////////////////////////////////////////////////
+  //////////////////////////////////////////////////
   
 }
