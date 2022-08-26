@@ -904,7 +904,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
 					"patching_rect" : [ 1771.656063488721884, 1496.623149802684793, 47.0, 22.0 ],
-					"text" : "serial d"
+					"text" : "serial c"
 				}
 
 			}
