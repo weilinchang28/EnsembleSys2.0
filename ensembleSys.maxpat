@@ -1077,7 +1077,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 244.240707039833069, 91.256681829690933, 39.0, 22.0 ],
-					"text" : "port d"
+					"text" : "port c"
 				}
 
 			}
