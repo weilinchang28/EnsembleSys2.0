@@ -10,7 +10,7 @@
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 34.0, 87.0, 1060.0, 1234.0 ],
+		"rect" : [ 34.0, 87.0, 1061.0, 1234.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -904,7 +904,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
 					"patching_rect" : [ 1771.656063488721884, 1496.623149802684793, 47.0, 22.0 ],
-					"text" : "serial c"
+					"text" : "serial d"
 				}
 
 			}
@@ -1077,7 +1077,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"patching_rect" : [ 244.240707039833069, 91.256681829690933, 39.0, 22.0 ],
-					"text" : "port c"
+					"text" : "port d"
 				}
 
 			}
@@ -1112,7 +1112,7 @@
 					"numinlets" : 1,
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "" ],
-					"patching_rect" : [ 30.213902860879898, 124.60379671335221, 103.0, 22.0 ],
+					"patching_rect" : [ 30.213902860879898, 124.60379671335221, 89.0, 22.0 ],
 					"text" : "serial z 115200"
 				}
 

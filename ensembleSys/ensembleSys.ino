@@ -8,7 +8,7 @@
 #define PIN1 10
 #define PIN2 11
 
-#define NUMPIXELS 28
+#define NUMPIXELS 30
 #define BRIGHTNESS 50
 
 Adafruit_NeoPixel player1 (NUMPIXELS, PIN0, NEO_GRB + NEO_KHZ800);
@@ -54,9 +54,9 @@ int userPitch3 [ ] = {nA3, sA3, sA3, nC4, nC4, nC4, nD4, nD4, nD4, nE4, nE4, nF4
 int userChord [ ] = {userPitch1, userPitch2, userPitch3};
 
 ///// Chord Progression 01 - LEDs ///// 
-int userPitchLED1 [ ] = {26, 26, 20, 20, 20, 13, 13, 13, 9, 9, 2, 2}; // {27, 27, 19, 19, 19, 11, 11, 11, 7, 7, 0, 0}
-int userPitchLED2 [ ] = {26, 26, 26, 26, 20, 20, 20, 17, 17, 8, 8, 0}; // {27, 27, 27, 27, 19, 19, 19, 15, 15, 7, 7, 0}
-int userPitchLED3 [ ] = {26, 24, 24, 18, 18, 18, 11, 11, 11, 3, 3, 0}; // {27, 23, 23, 15, 15, 15, 7, 7, 7, 2, 2, 0}
+int userPitchLED1 [ ] = {27, 27, 22, 22, 22, 16, 16, 16, 12, 12, 4, 4}; 
+int userPitchLED2 [ ] = {27, 27, 27, 27, 21, 21, 21, 18, 18, 10, 10, 0}; 
+int userPitchLED3 [ ] = {27, 24, 24, 18, 18, 18, 11, 11, 11, 4, 4, 0}; 
 int userLEDs [ ] = {userPitchLED1, userPitchLED2, userPitchLED3};
 
 float mapSoftPot0;
@@ -67,12 +67,15 @@ float mapSoftPot3;
 float mapSoftPot4;
 float mapSoftPot5;
 
+int playerNum = 3;
 int chordIndex = 0;
+int chordCount = 11;
 int LEDchordIndex = 0;
 int LEDPos = 0; // Imporv Mode
 int acceptRange = 7.5; // out of tune range
 int numInTune;
 int counter = 0; 
+
 
 
 
@@ -102,7 +105,7 @@ void playChord()
   }
 
   numInTune = 0;
-  for (int i = 0; i < sizeof(result); i++) // 
+  for (int i = 0; i < sizeof(result); i++) 
   {
     if (result[i] == true)
     {
@@ -110,7 +113,7 @@ void playChord()
     }
   }
 
-  if (numInTune == 3) 
+  if (numInTune == playerNum) 
   {
     if (counter > 100) // define the deboucing value
     {
@@ -120,10 +123,12 @@ void playChord()
     } 
     else
     {
-      counter++;
+      if (chordIndex < chordCount)
+      {
+        counter++;
+      }
     }
   }
-  
 }
 
 
@@ -175,17 +180,17 @@ void setup()
 
   // LED Setup // 
   player1.begin();  
-  player1.setBrightness (50);
+  player1.setBrightness (100);
   player1.clear();
   player1.show();
   
   player2.begin(); 
-  player2.setBrightness (50);
+  player2.setBrightness (100);
   player2.clear();
   player2.show();
    
   player3.begin();
-  player3.setBrightness (50);
+  player3.setBrightness (100);
   player3.clear();
   player3.show();
   
@@ -242,19 +247,36 @@ void loop()
   // ChordProg LED //
   
   player1.clear();
-  player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 255, 255);
+  player1.setPixelColor (userPitchLED1 [LEDchordIndex], 255, 172, 26);
   player1.show();
   
   player2.clear();
-  player2.setPixelColor (userPitchLED2 [LEDchordIndex], 255, 255, 255);
+  player2.setPixelColor (userPitchLED2 [LEDchordIndex], 255, 172, 26);
   player2.show();
   
   player3.clear();
-  player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 255, 255);
+  player3.setPixelColor (userPitchLED3 [LEDchordIndex], 255, 172, 26 ); //45, 199, 9
   player3.show();
 
   /////////////////////////////
   /////////////////////////////
+
+  if (chordIndex == chordCount && numInTune == playerNum)
+  {
+    player1.clear();
+    player1.setPixelColor (userPitchLED1 [LEDchordIndex], 45, 199, 9);
+    player1.show();
+
+    player2.clear();
+    player2.setPixelColor (userPitchLED2 [LEDchordIndex], 45, 199, 9);
+    player2.show();
+
+    player3.clear();
+    player3.setPixelColor (userPitchLED3 [LEDchordIndex], 45, 199, 9);
+    player3.show();
+  }
+
+
 
 
 
